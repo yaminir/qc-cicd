@@ -11,7 +11,8 @@ class PipelineStack(cdk.Stack):
             pipeline_name="YprCicdPipeline",
             synth=pipelines.ShellStep("Synth",
                 input=pipelines.CodePipelineSource.connection("yaminir/qc-cicd", "main",
-                    connection_arn="arn:aws:codeconnections:us-east-1:014111701234:connection/771d8fb0-36c6-4734-993e-0cfe1a09d178"),
+                    connection_arn="arn:aws:codeconnections:us-east-1:014111701234:connection/771d8fb0-36c6-4734-993e-0cfe1a09d178",
+                    trigger_on_push=True),
                 commands=[
                     "npm install -g aws-cdk",
                     "pip install -r requirements.txt", 
