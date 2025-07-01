@@ -1,5 +1,100 @@
 {
  "Resources": {
+  "PipelineArtifactsBucketEncryptionKeyF5BF0670": {
+   "Type": "AWS::KMS::Key",
+   "Properties": {
+    "KeyPolicy": {
+     "Statement": [
+      {
+       "Action": "kms:*",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::014111701234:root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::387385193794:role/cdk-hnb659fds-deploy-role-387385193794-us-east-1"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::093004983829:role/cdk-hnb659fds-deploy-role-093004983829-us-east-1"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "PipelineStack/Pipeline/Pipeline/ArtifactsBucketEncryptionKey/Resource"
+   }
+  },
+  "PipelineArtifactsBucketEncryptionKeyAlias94A07392": {
+   "Type": "AWS::KMS::Alias",
+   "Properties": {
+    "AliasName": "alias/codepipeline-pipelinestackpipelinee95eedaa",
+    "TargetKeyId": {
+     "Fn::GetAtt": [
+      "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+      "Arn"
+     ]
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "PipelineStack/Pipeline/Pipeline/ArtifactsBucketEncryptionKeyAlias/Resource"
+   }
+  },
   "PipelineArtifactsBucketAEA9A052": {
    "Type": "AWS::S3::Bucket",
    "Properties": {
@@ -7,6 +102,12 @@
      "ServerSideEncryptionConfiguration": [
       {
        "ServerSideEncryptionByDefault": {
+        "KMSMasterKeyID": {
+         "Fn::GetAtt": [
+          "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+          "Arn"
+         ]
+        },
         "SSEAlgorithm": "aws:kms"
        }
       }
@@ -83,18 +184,51 @@
            {
             "Ref": "AWS::Partition"
            },
-           ":iam::",
+           ":iam::387385193794:role/cdk-hnb659fds-deploy-role-387385193794-us-east-1"
+          ]
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "PipelineArtifactsBucketAEA9A052",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
            {
-            "Ref": "AWS::AccountId"
+            "Fn::GetAtt": [
+             "PipelineArtifactsBucketAEA9A052",
+             "Arn"
+            ]
            },
-           ":role/cdk-hnb659fds-deploy-role-",
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
            {
-            "Ref": "AWS::AccountId"
+            "Ref": "AWS::Partition"
            },
-           "-",
-           {
-            "Ref": "AWS::Region"
-           }
+           ":iam::093004983829:role/cdk-hnb659fds-deploy-role-093004983829-us-east-1"
           ]
          ]
         }
@@ -193,6 +327,22 @@
        ]
       },
       {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+         "Arn"
+        ]
+       }
+      },
+      {
        "Action": "sts:AssumeRole",
        "Effect": "Allow",
        "Resource": {
@@ -223,18 +373,33 @@
           {
            "Ref": "AWS::Partition"
           },
-          ":iam::",
+          ":iam::387385193794:role/cdk-hnb659fds-deploy-role-387385193794-us-east-1"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineProdPromoteToProdCodePipelineActionRole08AAED6C",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
           {
-           "Ref": "AWS::AccountId"
+           "Ref": "AWS::Partition"
           },
-          ":role/cdk-hnb659fds-deploy-role-",
-          {
-           "Ref": "AWS::AccountId"
-          },
-          "-",
-          {
-           "Ref": "AWS::Region"
-          }
+          ":iam::093004983829:role/cdk-hnb659fds-deploy-role-093004983829-us-east-1"
          ]
         ]
        }
@@ -257,6 +422,15 @@
    "Type": "AWS::CodePipeline::Pipeline",
    "Properties": {
     "ArtifactStore": {
+     "EncryptionKey": {
+      "Id": {
+       "Fn::GetAtt": [
+        "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+        "Arn"
+       ]
+      },
+      "Type": "KMS"
+     },
      "Location": {
       "Ref": "PipelineArtifactsBucketAEA9A052"
      },
@@ -383,7 +557,7 @@
          "Version": "1"
         },
         "Configuration": {
-         "StackName": "Deploy-YprCicdStack",
+         "StackName": "Dev-YprCicdStack-Dev",
          "Capabilities": "CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND",
          "RoleArn": {
           "Fn::Join": [
@@ -393,31 +567,20 @@
             {
              "Ref": "AWS::Partition"
             },
-            ":iam::",
-            {
-             "Ref": "AWS::AccountId"
-            },
-            ":role/cdk-hnb659fds-cfn-exec-role-",
-            {
-             "Ref": "AWS::AccountId"
-            },
-            "-",
-            {
-             "Ref": "AWS::Region"
-            }
+            ":iam::387385193794:role/cdk-hnb659fds-cfn-exec-role-387385193794-us-east-1"
            ]
           ]
          },
          "ActionMode": "CHANGE_SET_REPLACE",
          "ChangeSetName": "PipelineChange",
-         "TemplatePath": "Synth_Output::assembly-PipelineStack-Deploy/PipelineStackDeployYprCicdStack544DA3A2.template.json"
+         "TemplatePath": "Synth_Output::assembly-PipelineStack-Dev/PipelineStackDevYprCicdStackDev3D5D345A.template.json"
         },
         "InputArtifacts": [
          {
           "Name": "Synth_Output"
          }
         ],
-        "Name": "Prepare",
+        "Name": "YprCicdStack-Dev.Prepare",
         "RoleArn": {
          "Fn::Join": [
           "",
@@ -426,18 +589,7 @@
            {
             "Ref": "AWS::Partition"
            },
-           ":iam::",
-           {
-            "Ref": "AWS::AccountId"
-           },
-           ":role/cdk-hnb659fds-deploy-role-",
-           {
-            "Ref": "AWS::AccountId"
-           },
-           "-",
-           {
-            "Ref": "AWS::Region"
-           }
+           ":iam::387385193794:role/cdk-hnb659fds-deploy-role-387385193794-us-east-1"
           ]
          ]
         },
@@ -451,11 +603,11 @@
          "Version": "1"
         },
         "Configuration": {
-         "StackName": "Deploy-YprCicdStack",
+         "StackName": "Dev-YprCicdStack-Dev",
          "ActionMode": "CHANGE_SET_EXECUTE",
          "ChangeSetName": "PipelineChange"
         },
-        "Name": "Deploy",
+        "Name": "YprCicdStack-Dev.Deploy",
         "RoleArn": {
          "Fn::Join": [
           "",
@@ -464,25 +616,134 @@
            {
             "Ref": "AWS::Partition"
            },
-           ":iam::",
-           {
-            "Ref": "AWS::AccountId"
-           },
-           ":role/cdk-hnb659fds-deploy-role-",
-           {
-            "Ref": "AWS::AccountId"
-           },
-           "-",
-           {
-            "Ref": "AWS::Region"
-           }
+           ":iam::387385193794:role/cdk-hnb659fds-deploy-role-387385193794-us-east-1"
           ]
          ]
         },
         "RunOrder": 2
+       },
+       {
+        "ActionTypeId": {
+         "Category": "Build",
+         "Owner": "AWS",
+         "Provider": "CodeBuild",
+         "Version": "1"
+        },
+        "Configuration": {
+         "ProjectName": {
+          "Ref": "PipelineDevDevValidationE96AB471"
+         }
+        },
+        "InputArtifacts": [
+         {
+          "Name": "yaminir_qc_cicd_Source"
+         }
+        ],
+        "Name": "DevValidation",
+        "RoleArn": {
+         "Fn::GetAtt": [
+          "PipelineCodeBuildActionRole226DB0CB",
+          "Arn"
+         ]
+        },
+        "RunOrder": 3
        }
       ],
-      "Name": "Deploy"
+      "Name": "Dev"
+     },
+     {
+      "Actions": [
+       {
+        "ActionTypeId": {
+         "Category": "Approval",
+         "Owner": "AWS",
+         "Provider": "Manual",
+         "Version": "1"
+        },
+        "Name": "PromoteToProd",
+        "RoleArn": {
+         "Fn::GetAtt": [
+          "PipelineProdPromoteToProdCodePipelineActionRole08AAED6C",
+          "Arn"
+         ]
+        },
+        "RunOrder": 1
+       },
+       {
+        "ActionTypeId": {
+         "Category": "Deploy",
+         "Owner": "AWS",
+         "Provider": "CloudFormation",
+         "Version": "1"
+        },
+        "Configuration": {
+         "StackName": "Prod-YprCicdStack-Prod",
+         "Capabilities": "CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND",
+         "RoleArn": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":iam::093004983829:role/cdk-hnb659fds-cfn-exec-role-093004983829-us-east-1"
+           ]
+          ]
+         },
+         "ActionMode": "CHANGE_SET_REPLACE",
+         "ChangeSetName": "PipelineChange",
+         "TemplatePath": "Synth_Output::assembly-PipelineStack-Prod/PipelineStackProdYprCicdStackProd10A0AC2B.template.json"
+        },
+        "InputArtifacts": [
+         {
+          "Name": "Synth_Output"
+         }
+        ],
+        "Name": "YprCicdStack-Prod.Prepare",
+        "RoleArn": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::093004983829:role/cdk-hnb659fds-deploy-role-093004983829-us-east-1"
+          ]
+         ]
+        },
+        "RunOrder": 2
+       },
+       {
+        "ActionTypeId": {
+         "Category": "Deploy",
+         "Owner": "AWS",
+         "Provider": "CloudFormation",
+         "Version": "1"
+        },
+        "Configuration": {
+         "StackName": "Prod-YprCicdStack-Prod",
+         "ActionMode": "CHANGE_SET_EXECUTE",
+         "ChangeSetName": "PipelineChange"
+        },
+        "Name": "YprCicdStack-Prod.Deploy",
+        "RoleArn": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::093004983829:role/cdk-hnb659fds-deploy-role-093004983829-us-east-1"
+          ]
+         ]
+        },
+        "RunOrder": 3
+       }
+      ],
+      "Name": "Prod"
      }
     ]
    },
@@ -568,6 +829,22 @@
       },
       {
        "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
         "s3:PutObjectAcl",
         "s3:PutObjectVersionAcl"
        ],
@@ -642,15 +919,7 @@
            {
             "Ref": "AWS::Partition"
            },
-           ":logs:",
-           {
-            "Ref": "AWS::Region"
-           },
-           ":",
-           {
-            "Ref": "AWS::AccountId"
-           },
-           ":log-group:/aws/codebuild/",
+           ":logs:us-east-1:014111701234:log-group:/aws/codebuild/",
            {
             "Ref": "PipelineBuildSynthCdkBuildProject6BEFA8E6"
            }
@@ -665,15 +934,7 @@
            {
             "Ref": "AWS::Partition"
            },
-           ":logs:",
-           {
-            "Ref": "AWS::Region"
-           },
-           ":",
-           {
-            "Ref": "AWS::AccountId"
-           },
-           ":log-group:/aws/codebuild/",
+           ":logs:us-east-1:014111701234:log-group:/aws/codebuild/",
            {
             "Ref": "PipelineBuildSynthCdkBuildProject6BEFA8E6"
            },
@@ -700,15 +961,7 @@
           {
            "Ref": "AWS::Partition"
           },
-          ":codebuild:",
-          {
-           "Ref": "AWS::Region"
-          },
-          ":",
-          {
-           "Ref": "AWS::AccountId"
-          },
-          ":report-group/",
+          ":codebuild:us-east-1:014111701234:report-group/",
           {
            "Ref": "PipelineBuildSynthCdkBuildProject6BEFA8E6"
           },
@@ -753,6 +1006,37 @@
          ]
         }
        ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+         "Arn"
+        ]
+       }
       }
      ],
      "Version": "2012-10-17"
@@ -778,7 +1062,12 @@
      "Type": "NO_CACHE"
     },
     "Description": "Pipeline step PipelineStack/Pipeline/Build/Synth",
-    "EncryptionKey": "alias/aws/s3",
+    "EncryptionKey": {
+     "Fn::GetAtt": [
+      "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+      "Arn"
+     ]
+    },
     "Environment": {
      "ComputeType": "BUILD_GENERAL1_SMALL",
      "Image": "aws/codebuild/standard:7.0",
@@ -799,6 +1088,233 @@
    },
    "Metadata": {
     "aws:cdk:path": "PipelineStack/Pipeline/Pipeline/Build/Synth/CdkBuildProject/Resource"
+   }
+  },
+  "PipelineDevDevValidationRole0B1C4CF3": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "codebuild.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "PipelineStack/Pipeline/Pipeline/Dev/DevValidation/DevValidation/Role/Resource"
+   }
+  },
+  "PipelineDevDevValidationRoleDefaultPolicy64FD5D64": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":logs:us-east-1:014111701234:log-group:/aws/codebuild/",
+           {
+            "Ref": "PipelineDevDevValidationE96AB471"
+           }
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":logs:us-east-1:014111701234:log-group:/aws/codebuild/",
+           {
+            "Ref": "PipelineDevDevValidationE96AB471"
+           },
+           ":*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "codebuild:CreateReportGroup",
+        "codebuild:CreateReport",
+        "codebuild:UpdateReport",
+        "codebuild:BatchPutTestCases",
+        "codebuild:BatchPutCodeCoverages"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":codebuild:us-east-1:014111701234:report-group/",
+          {
+           "Ref": "PipelineDevDevValidationE96AB471"
+          },
+          "-*"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "PipelineArtifactsBucketAEA9A052",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "PipelineArtifactsBucketAEA9A052",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "PipelineDevDevValidationRoleDefaultPolicy64FD5D64",
+    "Roles": [
+     {
+      "Ref": "PipelineDevDevValidationRole0B1C4CF3"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "PipelineStack/Pipeline/Pipeline/Dev/DevValidation/DevValidation/Role/DefaultPolicy/Resource"
+   }
+  },
+  "PipelineDevDevValidationE96AB471": {
+   "Type": "AWS::CodeBuild::Project",
+   "Properties": {
+    "Artifacts": {
+     "Type": "CODEPIPELINE"
+    },
+    "Cache": {
+     "Type": "NO_CACHE"
+    },
+    "Description": "Pipeline step PipelineStack/Pipeline/Dev/DevValidation",
+    "EncryptionKey": {
+     "Fn::GetAtt": [
+      "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "ComputeType": "BUILD_GENERAL1_SMALL",
+     "Image": "aws/codebuild/standard:7.0",
+     "ImagePullCredentialsType": "CODEBUILD",
+     "PrivilegedMode": false,
+     "Type": "LINUX_CONTAINER"
+    },
+    "ServiceRole": {
+     "Fn::GetAtt": [
+      "PipelineDevDevValidationRole0B1C4CF3",
+      "Arn"
+     ]
+    },
+    "Source": {
+     "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"echo 'Running dev environment tests...'\",\n        \"# Add your validation commands here\",\n        \"echo 'Dev deployment validated successfully'\"\n      ]\n    }\n  }\n}",
+     "Type": "CODEPIPELINE"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "PipelineStack/Pipeline/Pipeline/Dev/DevValidation/DevValidation/Resource"
+   }
+  },
+  "PipelineProdPromoteToProdCodePipelineActionRole08AAED6C": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "PipelineRoleB27FAA37",
+          "Arn"
+         ]
+        }
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "PipelineStack/Pipeline/Pipeline/Prod/PromoteToProd/CodePipelineActionRole/Resource"
    }
   },
   "PipelineCodeBuildActionRole226DB0CB": {
@@ -858,6 +1374,20 @@
          "Arn"
         ]
        }
+      },
+      {
+       "Action": [
+        "codebuild:BatchGetBuilds",
+        "codebuild:StartBuild",
+        "codebuild:StopBuild"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineDevDevValidationE96AB471",
+         "Arn"
+        ]
+       }
       }
      ],
      "Version": "2012-10-17"
@@ -914,15 +1444,7 @@
            {
             "Ref": "AWS::Partition"
            },
-           ":logs:",
-           {
-            "Ref": "AWS::Region"
-           },
-           ":",
-           {
-            "Ref": "AWS::AccountId"
-           },
-           ":log-group:/aws/codebuild/",
+           ":logs:us-east-1:014111701234:log-group:/aws/codebuild/",
            {
             "Ref": "PipelineUpdatePipelineSelfMutationDAA41400"
            }
@@ -937,15 +1459,7 @@
            {
             "Ref": "AWS::Partition"
            },
-           ":logs:",
-           {
-            "Ref": "AWS::Region"
-           },
-           ":",
-           {
-            "Ref": "AWS::AccountId"
-           },
-           ":log-group:/aws/codebuild/",
+           ":logs:us-east-1:014111701234:log-group:/aws/codebuild/",
            {
             "Ref": "PipelineUpdatePipelineSelfMutationDAA41400"
            },
@@ -972,15 +1486,7 @@
           {
            "Ref": "AWS::Partition"
           },
-          ":codebuild:",
-          {
-           "Ref": "AWS::Region"
-          },
-          ":",
-          {
-           "Ref": "AWS::AccountId"
-          },
-          ":report-group/",
+          ":codebuild:us-east-1:014111701234:report-group/",
           {
            "Ref": "PipelineUpdatePipelineSelfMutationDAA41400"
           },
@@ -1001,18 +1507,7 @@
         }
        },
        "Effect": "Allow",
-       "Resource": {
-        "Fn::Join": [
-         "",
-         [
-          "arn:*:iam::",
-          {
-           "Ref": "AWS::AccountId"
-          },
-          ":role/*"
-         ]
-        ]
-       }
+       "Resource": "arn:*:iam::014111701234:role/*"
       },
       {
        "Action": "cloudformation:DescribeStacks",
@@ -1053,6 +1548,34 @@
          ]
         }
        ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+         "Arn"
+        ]
+       }
       }
      ],
      "Version": "2012-10-17"
@@ -1078,7 +1601,12 @@
      "Type": "NO_CACHE"
     },
     "Description": "Pipeline step PipelineStack/Pipeline/UpdatePipeline/SelfMutate",
-    "EncryptionKey": "alias/aws/s3",
+    "EncryptionKey": {
+     "Fn::GetAtt": [
+      "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+      "Arn"
+     ]
+    },
     "Environment": {
      "ComputeType": "BUILD_GENERAL1_SMALL",
      "Image": "aws/codebuild/standard:7.0",
@@ -1105,278 +1633,11 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/0VNSwqDMBQ8i/v4KgqFbusFgj1AickrfRoTMQkiIXcv/upqvsyUUBYlFJmYXS5Vn2tqIb68kD0baURNBh3UViE/FBOze0dpFZ45xH9Wf8zJE3MVxGeQPfrVP9gO3GqSy2XvOjESA8TG6m1pw6t5dtbrNpBW1y+fbIdyuzloSqxBZ8MkMTG++K81twoecM86R5RPwXgaEJodf32bRakFAQAA"
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/0VOSwqDMBQ8i/v4KgqFLluX3Yg9QInJK30mGjGKSMjdS6LW1XxhJoc8yyFL+GJTIVWqqQH3mrhQbKABNfVooTQSq10xvti3E0bikYP7Z+WnP7hnqrPgnrgGN8BdE7dBROKZLcA9ZqFwCubONqiMJrGe9qY9I96Bq42OSxHP5tEJ15qZtDx/VaNpUcSZnXrParRmHgV6Vq3T1/SXAm5wTVpLlI5zP1GHUG/4Azd7cJ4lAQAA"
    },
    "Metadata": {
     "aws:cdk:path": "PipelineStack/CDKMetadata/Default"
-   },
-   "Condition": "CDKMetadataAvailable"
-  }
- },
- "Conditions": {
-  "CDKMetadataAvailable": {
-   "Fn::Or": [
-    {
-     "Fn::Or": [
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "af-south-1"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "ap-east-1"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "ap-northeast-1"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "ap-northeast-2"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "ap-northeast-3"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "ap-south-1"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "ap-south-2"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "ap-southeast-1"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "ap-southeast-2"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "ap-southeast-3"
-       ]
-      }
-     ]
-    },
-    {
-     "Fn::Or": [
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "ap-southeast-4"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "ca-central-1"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "ca-west-1"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "cn-north-1"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "cn-northwest-1"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "eu-central-1"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "eu-central-2"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "eu-north-1"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "eu-south-1"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "eu-south-2"
-       ]
-      }
-     ]
-    },
-    {
-     "Fn::Or": [
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "eu-west-1"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "eu-west-2"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "eu-west-3"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "il-central-1"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "me-central-1"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "me-south-1"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "sa-east-1"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "us-east-1"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "us-east-2"
-       ]
-      },
-      {
-       "Fn::Equals": [
-        {
-         "Ref": "AWS::Region"
-        },
-        "us-west-1"
-       ]
-      }
-     ]
-    },
-    {
-     "Fn::Equals": [
-      {
-       "Ref": "AWS::Region"
-      },
-      "us-west-2"
-     ]
-    }
-   ]
+   }
   }
  },
  "Parameters": {

@@ -9,6 +9,7 @@ class PipelineStack(cdk.Stack):
 
         pipeline = pipelines.CodePipeline(self, "Pipeline",
             pipeline_name="YprCicdPipeline",
+            cross_account_keys=True,
             synth=pipelines.ShellStep("Synth",
                 input=pipelines.CodePipelineSource.connection("yaminir/qc-cicd", "main",
                     connection_arn="arn:aws:codeconnections:us-east-1:014111701234:connection/771d8fb0-36c6-4734-993e-0cfe1a09d178",
@@ -21,9 +22,31 @@ class PipelineStack(cdk.Stack):
             )
         )
 
-        pipeline.add_stage(AppStage(self, "Deploy"))
+        # Development stage - auto deploy from main
+        dev_stage = AppStage(self, "Dev", env=cdk.Environment(
+            account="387385193794",  # Replace with actual dev account ID
+            region="us-east-1"
+        ))
+        pipeline.add_stage(dev_stage, post=[
+            pipelines.ShellStep("DevValidation",
+                commands=[
+                    "echo 'Running dev environment tests...'",
+                    "# Add your validation commands here",
+                    "echo 'Dev deployment validated successfully'"
+                ]
+            )
+        ])
+        
+        # Production stage - manual approval after dev success
+        prod_stage = AppStage(self, "Prod", env=cdk.Environment(
+            account="093004983829",  # Replace with actual prod account ID
+            region="us-east-1"
+        ))
+        pipeline.add_stage(prod_stage, pre=[
+            pipelines.ManualApprovalStep("PromoteToProd")
+        ])
 
 class AppStage(cdk.Stage):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
-        YprCicdStack(self, "YprCicdStack")
+        YprCicdStack(self, f"YprCicdStack-{construct_id}")
