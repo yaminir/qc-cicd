@@ -2,6 +2,7 @@ import aws_cdk as cdk
 from aws_cdk import pipelines
 from constructs import Construct
 from .ypr_cicd_stack import YprCicdStack
+from .config import ENVIRONMENTS
 
 class PipelineStack(cdk.Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
@@ -23,10 +24,14 @@ class PipelineStack(cdk.Stack):
         )
 
         # Development stage - auto deploy from main
-        dev_stage = AppStage(self, "Dev", env=cdk.Environment(
-            account="387385193794",  # Replace with actual dev account ID
-            region="us-east-1"
-        ))
+        dev_config = ENVIRONMENTS["dev"]
+        dev_stage = AppStage(self, "Dev", 
+            env_name="dev",
+            env=cdk.Environment(
+                account=dev_config["account"],
+                region=dev_config["region"]
+            )
+        )
         pipeline.add_stage(dev_stage, post=[
             pipelines.ShellStep("DevValidation",
                 commands=[
@@ -38,15 +43,19 @@ class PipelineStack(cdk.Stack):
         ])
         
         # Production stage - manual approval after dev success
-        prod_stage = AppStage(self, "Prod", env=cdk.Environment(
-            account="093004983829",  # Replace with actual prod account ID
-            region="us-east-1"
-        ))
+        prod_config = ENVIRONMENTS["prod"]
+        prod_stage = AppStage(self, "Prod", 
+            env_name="prod",
+            env=cdk.Environment(
+                account=prod_config["account"],
+                region=prod_config["region"]
+            )
+        )
         pipeline.add_stage(prod_stage, pre=[
             pipelines.ManualApprovalStep("PromoteToProd")
         ])
 
 class AppStage(cdk.Stage):
-    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+    def __init__(self, scope: Construct, construct_id: str, env_name: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
-        YprCicdStack(self, f"YprCicdStack-{construct_id}")
+        YprCicdStack(self, f"YprCicdStack-{construct_id}", env_name=env_name)
