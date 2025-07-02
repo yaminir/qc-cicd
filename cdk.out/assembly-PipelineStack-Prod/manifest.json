@@ -18,7 +18,7 @@
         "validateOnSynth": true,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::093004983829:role/cdk-hnb659fds-deploy-role-093004983829-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::093004983829:role/cdk-hnb659fds-cfn-exec-role-093004983829-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-093004983829-us-east-1/b7158e050c611bae88eed0fad2a32f0e386547658d8b7884ed43c1d4cbe3d252.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-093004983829-us-east-1/e13237950fee3e9c50e79ba0a27304889bd4e6b0ee87cf55a6599f8d9abab080.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -39,6 +39,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "MyBucketF68F3FF0"
+          }
+        ],
+        "/PipelineStack/Prod/YprCicdStack-Prod/MyParameter/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyParameter18BA547D"
           }
         ],
         "/PipelineStack/Prod/YprCicdStack-Prod/CDKMetadata/Default": [
