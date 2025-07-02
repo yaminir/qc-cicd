@@ -1,0 +1,67 @@
+{
+  "version": "44.0.0",
+  "artifacts": {
+    "PipelineStackProdYprCicdStackProd10A0AC2B.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "PipelineStackProdYprCicdStackProd10A0AC2B.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "PipelineStackProdYprCicdStackProd10A0AC2B": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://093004983829/us-east-1",
+      "properties": {
+        "templateFile": "PipelineStackProdYprCicdStackProd10A0AC2B.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": true,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::093004983829:role/cdk-hnb659fds-deploy-role-093004983829-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::093004983829:role/cdk-hnb659fds-cfn-exec-role-093004983829-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-093004983829-us-east-1/b7158e050c611bae88eed0fad2a32f0e386547658d8b7884ed43c1d4cbe3d252.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "PipelineStackProdYprCicdStackProd10A0AC2B.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::093004983829:role/cdk-hnb659fds-lookup-role-093004983829-us-east-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        },
+        "stackName": "Prod-YprCicdStack-Prod"
+      },
+      "dependencies": [
+        "PipelineStackProdYprCicdStackProd10A0AC2B.assets"
+      ],
+      "metadata": {
+        "/PipelineStack/Prod/YprCicdStack-Prod/MyBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyBucketF68F3FF0"
+          }
+        ],
+        "/PipelineStack/Prod/YprCicdStack-Prod/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/PipelineStack/Prod/YprCicdStack-Prod/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/PipelineStack/Prod/YprCicdStack-Prod/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "PipelineStack/Prod/YprCicdStack-Prod"
+    }
+  },
+  "minimumCliVersion": "2.1019.2"
+}

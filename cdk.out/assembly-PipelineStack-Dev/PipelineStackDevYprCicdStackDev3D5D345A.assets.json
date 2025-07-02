@@ -1,0 +1,21 @@
+{
+  "version": "44.0.0",
+  "files": {
+    "8e66ccb848f6b780e58b7260eaf60ff13220e48ebb8a60a9fcbcaebc8fc1599e": {
+      "displayName": "Dev-YprCicdStack-Dev Template",
+      "source": {
+        "path": "PipelineStackDevYprCicdStackDev3D5D345A.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "387385193794-us-east-1": {
+          "bucketName": "cdk-hnb659fds-assets-387385193794-us-east-1",
+          "objectKey": "8e66ccb848f6b780e58b7260eaf60ff13220e48ebb8a60a9fcbcaebc8fc1599e.json",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::387385193794:role/cdk-hnb659fds-file-publishing-role-387385193794-us-east-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
