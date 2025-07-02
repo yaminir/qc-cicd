@@ -12,7 +12,7 @@ class PipelineStack(cdk.Stack):
             cross_account_keys=True,
             synth=pipelines.ShellStep("Synth",
                 input=pipelines.CodePipelineSource.connection("yaminir/qc-cicd", "main",
-                    connection_arn="arn:aws:codeconnections:us-east-1:014111701234:connection/771d8fb0-36c6-4734-993e-0cfe1a09d178",
+                    connection_arn="arn:aws:codeconnections:us-east-1:014111701234:connection/89a0ea4c-89e1-4392-a652-6d616c365ba4",
                     trigger_on_push=True),
                 commands=[
                     "npm install -g aws-cdk",

@@ -13,10 +13,24 @@
     "aws:cdk:path": "PipelineStack/Dev/YprCicdStack-Dev/MyBucket/Resource"
    }
   },
+  "MyParameter18BA547D": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Description": "S3 bucket name for the application",
+    "Name": "/myapp/bucket-name",
+    "Type": "String",
+    "Value": {
+     "Ref": "MyBucketF68F3FF0"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "PipelineStack/Dev/YprCicdStack-Dev/MyParameter/Resource"
+   }
+  },
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zPSMzIw0jNQTCwv1k1OydbNyUzSqw4uSUzO1kksL44vNtardipNzk4t0XFOy4Owamt1AipLMvLz9I31LPXMFLOKMzN1i0rzSjJzU/WCIDQAL14SKlcAAAA="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zPSMzIw0jNQTCwv1k1OydbNyUzSqw4uSUzO1kksL46vLjbWq3YqTc5OLdFxTsuDsGp1iotzQaqKMvPSAxKLEnNTS1KLQPJwTm1trU5AZUlGfp6+sZ6lnpliVnFmpm5RaV5JZm6qXhCEBgBfspfAfAAAAA=="
    },
    "Metadata": {
     "aws:cdk:path": "PipelineStack/Dev/YprCicdStack-Dev/CDKMetadata/Default"

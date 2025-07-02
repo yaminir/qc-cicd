@@ -456,7 +456,7 @@
          "Version": "1"
         },
         "Configuration": {
-         "ConnectionArn": "arn:aws:codeconnections:us-east-1:014111701234:connection/771d8fb0-36c6-4734-993e-0cfe1a09d178",
+         "ConnectionArn": "arn:aws:codeconnections:us-east-1:014111701234:connection/89a0ea4c-89e1-4392-a652-6d616c365ba4",
          "FullRepositoryId": "yaminir/qc-cicd",
          "BranchName": "main",
          "DetectChanges": true
@@ -788,7 +788,7 @@
       {
        "Action": "codestar-connections:UseConnection",
        "Effect": "Allow",
-       "Resource": "arn:aws:codeconnections:us-east-1:014111701234:connection/771d8fb0-36c6-4734-993e-0cfe1a09d178"
+       "Resource": "arn:aws:codeconnections:us-east-1:014111701234:connection/89a0ea4c-89e1-4392-a652-6d616c365ba4"
       },
       {
        "Action": [
