@@ -18,45 +18,33 @@ class PipelineStack(cdk.Stack):
             synth=pipelines.ShellStep("Synth",
                 input=source,
                 commands=[
+                    # Quality Gate - Run before synth
+                    "echo 'Starting Quality Gate...'",
+                    "pip install -r requirements.txt",
+                    "pip install -r requirements-dev.txt",
+                    
+                    # Unit Tests
+                    "echo 'Running unit tests...'",
+                    "python -m pytest tests/ -v --cov=ypr_cicd --cov-report=term-missing",
+                    
+                    # Code Linting
+                    "echo 'Running code linting...'",
+                    "flake8 .",
+                    "black --check . --exclude=cdk.out",
+                    "pylint ypr_cicd/ --disable=C0114,C0116",
+                    
+                    # Security Scan
+                    "echo 'Running security scan...'",
+                    "bandit -r ypr_cicd/ -f json || true",
+                    
+                    # CDK Synth (only after quality gates pass)
+                    "echo 'Quality gates passed! Running CDK synth...'",
                     "npm install -g aws-cdk",
-                    "pip install -r requirements.txt", 
-                    "cdk synth"
+                    "cdk synth",
+                    "echo 'Pipeline synthesis completed!'"
                 ]
             )
         )
-        
-        # Quality Gate - Run before any deployment
-        pipeline.add_wave("QualityGate", pre=[
-            pipelines.ShellStep("UnitTests",
-                input=source,
-                commands=[
-                    "pip install -r requirements.txt",
-                    "pip install -r requirements-dev.txt",
-                    "python -m pytest tests/ -v --cov=ypr_cicd --cov-report=term-missing",
-                    "echo 'Unit tests passed!'"
-                ]
-            ),
-            pipelines.ShellStep("Linting",
-                input=source,
-                commands=[
-                    "pip install -r requirements-dev.txt",
-                    "echo 'Running code linting...'",
-                    "flake8 . --max-line-length=88 --exclude=cdk.out",
-                    "black --check . --exclude=cdk.out",
-                    "pylint ypr_cicd/ --disable=C0114,C0116",
-                    "echo 'Linting passed!'"
-                ]
-            ),
-            pipelines.ShellStep("SecurityScan",
-                input=source,
-                commands=[
-                    "pip install -r requirements-dev.txt",
-                    "echo 'Running security scan...'",
-                    "bandit -r ypr_cicd/ -f json || true",
-                    "echo 'Security scan completed!'"
-                ]
-            )
-        ])
 
         # Development stage - auto deploy from main
         dev_config = ENVIRONMENTS["dev"]
