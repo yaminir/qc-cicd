@@ -10,8 +10,8 @@ def test_stack_creates_bucket():
     # Synthesize the stack to CloudFormation template
     template = cdk.assertions.Template.from_stack(stack)
     
-    # Assert S3 bucket is created (dev has versioning disabled, so no VersioningConfiguration)
-    template.has_resource("AWS::S3::Bucket")
+    # Assert S3 bucket is created
+    template.resource_count_is("AWS::S3::Bucket", 1)
 
 def test_stack_creates_ssm_parameter():
     """Test that the stack creates an SSM parameter"""
