@@ -15,10 +15,14 @@
       "properties": {
         "templateFile": "PipelineStackDevYprCicdStackDev3D5D345A.template.json",
         "terminationProtection": false,
+        "tags": {
+          "Environment": "development",
+          "Project": "QC-CICD"
+        },
         "validateOnSynth": true,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::387385193794:role/cdk-hnb659fds-deploy-role-387385193794-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::387385193794:role/cdk-hnb659fds-cfn-exec-role-387385193794-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-387385193794-us-east-1/3ea4bdbf5994874ca3ba1e8c18341959d2192270db0079efd0677775c10d9cca.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-387385193794-us-east-1/5a840e167b4f2b2e55aac0f497795448e3a322df0c3827e56e08a26114563fb4.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -35,6 +39,21 @@
         "PipelineStackDevYprCicdStackDev3D5D345A.assets"
       ],
       "metadata": {
+        "/PipelineStack/Dev/YprCicdStack-Dev": [
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "Environment",
+                "Value": "development"
+              },
+              {
+                "Key": "Project",
+                "Value": "QC-CICD"
+              }
+            ]
+          }
+        ],
         "/PipelineStack/Dev/YprCicdStack-Dev/MyBucket/Resource": [
           {
             "type": "aws:cdk:logicalId",

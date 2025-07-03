@@ -551,6 +551,89 @@
       "Actions": [
        {
         "ActionTypeId": {
+         "Category": "Build",
+         "Owner": "AWS",
+         "Provider": "CodeBuild",
+         "Version": "1"
+        },
+        "Configuration": {
+         "ProjectName": {
+          "Ref": "PipelineQualityGateLintingC8B0F45E"
+         }
+        },
+        "InputArtifacts": [
+         {
+          "Name": "yaminir_qc_cicd_Source"
+         }
+        ],
+        "Name": "Linting",
+        "RoleArn": {
+         "Fn::GetAtt": [
+          "PipelineCodeBuildActionRole226DB0CB",
+          "Arn"
+         ]
+        },
+        "RunOrder": 1
+       },
+       {
+        "ActionTypeId": {
+         "Category": "Build",
+         "Owner": "AWS",
+         "Provider": "CodeBuild",
+         "Version": "1"
+        },
+        "Configuration": {
+         "ProjectName": {
+          "Ref": "PipelineQualityGateSecurityScanE5E159F2"
+         }
+        },
+        "InputArtifacts": [
+         {
+          "Name": "yaminir_qc_cicd_Source"
+         }
+        ],
+        "Name": "SecurityScan",
+        "RoleArn": {
+         "Fn::GetAtt": [
+          "PipelineCodeBuildActionRole226DB0CB",
+          "Arn"
+         ]
+        },
+        "RunOrder": 1
+       },
+       {
+        "ActionTypeId": {
+         "Category": "Build",
+         "Owner": "AWS",
+         "Provider": "CodeBuild",
+         "Version": "1"
+        },
+        "Configuration": {
+         "ProjectName": {
+          "Ref": "PipelineQualityGateUnitTests82F2D281"
+         }
+        },
+        "InputArtifacts": [
+         {
+          "Name": "yaminir_qc_cicd_Source"
+         }
+        ],
+        "Name": "UnitTests",
+        "RoleArn": {
+         "Fn::GetAtt": [
+          "PipelineCodeBuildActionRole226DB0CB",
+          "Arn"
+         ]
+        },
+        "RunOrder": 1
+       }
+      ],
+      "Name": "QualityGate"
+     },
+     {
+      "Actions": [
+       {
+        "ActionTypeId": {
          "Category": "Deploy",
          "Owner": "AWS",
          "Provider": "CloudFormation",
@@ -571,6 +654,7 @@
            ]
           ]
          },
+         "TemplateConfiguration": "Synth_Output::assembly-PipelineStack-Dev/PipelineStackDevYprCicdStackDev3D5D345A.template.json.config.json",
          "ActionMode": "CHANGE_SET_REPLACE",
          "ChangeSetName": "PipelineChange",
          "TemplatePath": "Synth_Output::assembly-PipelineStack-Dev/PipelineStackDevYprCicdStackDev3D5D345A.template.json"
@@ -691,6 +775,7 @@
            ]
           ]
          },
+         "TemplateConfiguration": "Synth_Output::assembly-PipelineStack-Prod/PipelineStackProdYprCicdStackProd10A0AC2B.template.json.config.json",
          "ActionMode": "CHANGE_SET_REPLACE",
          "ChangeSetName": "PipelineChange",
          "TemplatePath": "Synth_Output::assembly-PipelineStack-Prod/PipelineStackProdYprCicdStackProd10A0AC2B.template.json"
@@ -1090,6 +1175,612 @@
     "aws:cdk:path": "PipelineStack/Pipeline/Pipeline/Build/Synth/CdkBuildProject/Resource"
    }
   },
+  "PipelineQualityGateLintingRole1DF2F0E1": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "codebuild.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "PipelineStack/Pipeline/Pipeline/QualityGate/Linting/Linting/Role/Resource"
+   }
+  },
+  "PipelineQualityGateLintingRoleDefaultPolicyC9D3DF35": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":logs:us-east-1:014111701234:log-group:/aws/codebuild/",
+           {
+            "Ref": "PipelineQualityGateLintingC8B0F45E"
+           }
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":logs:us-east-1:014111701234:log-group:/aws/codebuild/",
+           {
+            "Ref": "PipelineQualityGateLintingC8B0F45E"
+           },
+           ":*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "codebuild:CreateReportGroup",
+        "codebuild:CreateReport",
+        "codebuild:UpdateReport",
+        "codebuild:BatchPutTestCases",
+        "codebuild:BatchPutCodeCoverages"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":codebuild:us-east-1:014111701234:report-group/",
+          {
+           "Ref": "PipelineQualityGateLintingC8B0F45E"
+          },
+          "-*"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "PipelineArtifactsBucketAEA9A052",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "PipelineArtifactsBucketAEA9A052",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "PipelineQualityGateLintingRoleDefaultPolicyC9D3DF35",
+    "Roles": [
+     {
+      "Ref": "PipelineQualityGateLintingRole1DF2F0E1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "PipelineStack/Pipeline/Pipeline/QualityGate/Linting/Linting/Role/DefaultPolicy/Resource"
+   }
+  },
+  "PipelineQualityGateLintingC8B0F45E": {
+   "Type": "AWS::CodeBuild::Project",
+   "Properties": {
+    "Artifacts": {
+     "Type": "CODEPIPELINE"
+    },
+    "Cache": {
+     "Type": "NO_CACHE"
+    },
+    "Description": "Pipeline step PipelineStack/Pipeline/QualityGate/Linting",
+    "EncryptionKey": {
+     "Fn::GetAtt": [
+      "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "ComputeType": "BUILD_GENERAL1_SMALL",
+     "Image": "aws/codebuild/standard:7.0",
+     "ImagePullCredentialsType": "CODEBUILD",
+     "PrivilegedMode": false,
+     "Type": "LINUX_CONTAINER"
+    },
+    "ServiceRole": {
+     "Fn::GetAtt": [
+      "PipelineQualityGateLintingRole1DF2F0E1",
+      "Arn"
+     ]
+    },
+    "Source": {
+     "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"pip install -r requirements-dev.txt\",\n        \"echo 'Running code linting...'\",\n        \"flake8 . --max-line-length=88 --exclude=cdk.out\",\n        \"black --check . --exclude=cdk.out\",\n        \"pylint ypr_cicd/ --disable=C0114,C0116\",\n        \"echo 'Linting passed!'\"\n      ]\n    }\n  }\n}",
+     "Type": "CODEPIPELINE"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "PipelineStack/Pipeline/Pipeline/QualityGate/Linting/Linting/Resource"
+   }
+  },
+  "PipelineQualityGateSecurityScanRole4AE31A00": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "codebuild.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "PipelineStack/Pipeline/Pipeline/QualityGate/SecurityScan/SecurityScan/Role/Resource"
+   }
+  },
+  "PipelineQualityGateSecurityScanRoleDefaultPolicy2FF8E762": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":logs:us-east-1:014111701234:log-group:/aws/codebuild/",
+           {
+            "Ref": "PipelineQualityGateSecurityScanE5E159F2"
+           }
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":logs:us-east-1:014111701234:log-group:/aws/codebuild/",
+           {
+            "Ref": "PipelineQualityGateSecurityScanE5E159F2"
+           },
+           ":*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "codebuild:CreateReportGroup",
+        "codebuild:CreateReport",
+        "codebuild:UpdateReport",
+        "codebuild:BatchPutTestCases",
+        "codebuild:BatchPutCodeCoverages"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":codebuild:us-east-1:014111701234:report-group/",
+          {
+           "Ref": "PipelineQualityGateSecurityScanE5E159F2"
+          },
+          "-*"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "PipelineArtifactsBucketAEA9A052",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "PipelineArtifactsBucketAEA9A052",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "PipelineQualityGateSecurityScanRoleDefaultPolicy2FF8E762",
+    "Roles": [
+     {
+      "Ref": "PipelineQualityGateSecurityScanRole4AE31A00"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "PipelineStack/Pipeline/Pipeline/QualityGate/SecurityScan/SecurityScan/Role/DefaultPolicy/Resource"
+   }
+  },
+  "PipelineQualityGateSecurityScanE5E159F2": {
+   "Type": "AWS::CodeBuild::Project",
+   "Properties": {
+    "Artifacts": {
+     "Type": "CODEPIPELINE"
+    },
+    "Cache": {
+     "Type": "NO_CACHE"
+    },
+    "Description": "Pipeline step PipelineStack/Pipeline/QualityGate/SecurityScan",
+    "EncryptionKey": {
+     "Fn::GetAtt": [
+      "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "ComputeType": "BUILD_GENERAL1_SMALL",
+     "Image": "aws/codebuild/standard:7.0",
+     "ImagePullCredentialsType": "CODEBUILD",
+     "PrivilegedMode": false,
+     "Type": "LINUX_CONTAINER"
+    },
+    "ServiceRole": {
+     "Fn::GetAtt": [
+      "PipelineQualityGateSecurityScanRole4AE31A00",
+      "Arn"
+     ]
+    },
+    "Source": {
+     "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"pip install -r requirements-dev.txt\",\n        \"echo 'Running security scan...'\",\n        \"bandit -r ypr_cicd/ -f json || true\",\n        \"echo 'Security scan completed!'\"\n      ]\n    }\n  }\n}",
+     "Type": "CODEPIPELINE"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "PipelineStack/Pipeline/Pipeline/QualityGate/SecurityScan/SecurityScan/Resource"
+   }
+  },
+  "PipelineQualityGateUnitTestsRoleC74171BE": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "codebuild.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "PipelineStack/Pipeline/Pipeline/QualityGate/UnitTests/UnitTests/Role/Resource"
+   }
+  },
+  "PipelineQualityGateUnitTestsRoleDefaultPolicyC740F94F": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":logs:us-east-1:014111701234:log-group:/aws/codebuild/",
+           {
+            "Ref": "PipelineQualityGateUnitTests82F2D281"
+           }
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":logs:us-east-1:014111701234:log-group:/aws/codebuild/",
+           {
+            "Ref": "PipelineQualityGateUnitTests82F2D281"
+           },
+           ":*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "codebuild:CreateReportGroup",
+        "codebuild:CreateReport",
+        "codebuild:UpdateReport",
+        "codebuild:BatchPutTestCases",
+        "codebuild:BatchPutCodeCoverages"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":codebuild:us-east-1:014111701234:report-group/",
+          {
+           "Ref": "PipelineQualityGateUnitTests82F2D281"
+          },
+          "-*"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "PipelineArtifactsBucketAEA9A052",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "PipelineArtifactsBucketAEA9A052",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "PipelineQualityGateUnitTestsRoleDefaultPolicyC740F94F",
+    "Roles": [
+     {
+      "Ref": "PipelineQualityGateUnitTestsRoleC74171BE"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "PipelineStack/Pipeline/Pipeline/QualityGate/UnitTests/UnitTests/Role/DefaultPolicy/Resource"
+   }
+  },
+  "PipelineQualityGateUnitTests82F2D281": {
+   "Type": "AWS::CodeBuild::Project",
+   "Properties": {
+    "Artifacts": {
+     "Type": "CODEPIPELINE"
+    },
+    "Cache": {
+     "Type": "NO_CACHE"
+    },
+    "Description": "Pipeline step PipelineStack/Pipeline/QualityGate/UnitTests",
+    "EncryptionKey": {
+     "Fn::GetAtt": [
+      "PipelineArtifactsBucketEncryptionKeyF5BF0670",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "ComputeType": "BUILD_GENERAL1_SMALL",
+     "Image": "aws/codebuild/standard:7.0",
+     "ImagePullCredentialsType": "CODEBUILD",
+     "PrivilegedMode": false,
+     "Type": "LINUX_CONTAINER"
+    },
+    "ServiceRole": {
+     "Fn::GetAtt": [
+      "PipelineQualityGateUnitTestsRoleC74171BE",
+      "Arn"
+     ]
+    },
+    "Source": {
+     "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"pip install -r requirements.txt\",\n        \"pip install -r requirements-dev.txt\",\n        \"python -m pytest tests/ -v --cov=ypr_cicd --cov-report=term-missing\",\n        \"echo 'Unit tests passed!'\"\n      ]\n    }\n  }\n}",
+     "Type": "CODEPIPELINE"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "PipelineStack/Pipeline/Pipeline/QualityGate/UnitTests/UnitTests/Resource"
+   }
+  },
   "PipelineDevDevValidationRole0B1C4CF3": {
    "Type": "AWS::IAM::Role",
    "Properties": {
@@ -1371,6 +2062,48 @@
        "Resource": {
         "Fn::GetAtt": [
          "PipelineUpdatePipelineSelfMutationDAA41400",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "codebuild:BatchGetBuilds",
+        "codebuild:StartBuild",
+        "codebuild:StopBuild"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineQualityGateLintingC8B0F45E",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "codebuild:BatchGetBuilds",
+        "codebuild:StartBuild",
+        "codebuild:StopBuild"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineQualityGateSecurityScanE5E159F2",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "codebuild:BatchGetBuilds",
+        "codebuild:StartBuild",
+        "codebuild:StopBuild"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineQualityGateUnitTests82F2D281",
          "Arn"
         ]
        }
