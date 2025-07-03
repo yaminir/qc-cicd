@@ -3,9 +3,16 @@
   "MyBucketF68F3FF0": {
    "Type": "AWS::S3::Bucket",
    "Properties": {
-    "VersioningConfiguration": {
-     "Status": "Enabled"
-    }
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "development"
+     },
+     {
+      "Key": "Project",
+      "Value": "QC-CICD"
+     }
+    ]
    },
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
@@ -16,8 +23,12 @@
   "MyParameter18BA547D": {
    "Type": "AWS::SSM::Parameter",
    "Properties": {
-    "Description": "S3 bucket name for the application",
-    "Name": "/myapp/bucket-name",
+    "Description": "S3 bucket name for dev environment",
+    "Name": "/dev/myapp/bucket-name",
+    "Tags": {
+     "Environment": "development",
+     "Project": "QC-CICD"
+    },
     "Type": "String",
     "Value": {
      "Ref": "MyBucketF68F3FF0"

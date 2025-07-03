@@ -3,12 +3,22 @@
   "MyBucketF68F3FF0": {
    "Type": "AWS::S3::Bucket",
    "Properties": {
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "production"
+     },
+     {
+      "Key": "Project",
+      "Value": "QC-CICD"
+     }
+    ],
     "VersioningConfiguration": {
      "Status": "Enabled"
     }
    },
-   "UpdateReplacePolicy": "Delete",
-   "DeletionPolicy": "Delete",
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
    "Metadata": {
     "aws:cdk:path": "PipelineStack/Prod/YprCicdStack-Prod/MyBucket/Resource"
    }
@@ -16,8 +26,12 @@
   "MyParameter18BA547D": {
    "Type": "AWS::SSM::Parameter",
    "Properties": {
-    "Description": "S3 bucket name for the application",
-    "Name": "/myapp/bucket-name",
+    "Description": "S3 bucket name for prod environment",
+    "Name": "/prod/myapp/bucket-name",
+    "Tags": {
+     "Environment": "production",
+     "Project": "QC-CICD"
+    },
     "Type": "String",
     "Value": {
      "Ref": "MyBucketF68F3FF0"
