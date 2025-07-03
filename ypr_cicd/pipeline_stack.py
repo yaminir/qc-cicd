@@ -25,7 +25,10 @@ class PipelineStack(cdk.Stack):
                     
                     # Unit Tests
                     "echo 'Running unit tests...'",
-                    "python -m pytest tests/ -v --cov=ypr_cicd --cov-report=term-missing",
+                    "python --version",
+                    "pip list | grep -E '(aws-cdk|pytest)'",
+                    "export PYTHONPATH=$PYTHONPATH:.",
+                    "python -m pytest tests/ -v --tb=short || (echo 'Tests failed, showing detailed output:' && python -m pytest tests/ -v --tb=long && exit 1)",
                     
                     # Code Linting
                     "echo 'Running code linting...'",
