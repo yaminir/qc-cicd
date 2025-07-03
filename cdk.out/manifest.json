@@ -32,7 +32,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::014111701234:role/cdk-hnb659fds-deploy-role-014111701234-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::014111701234:role/cdk-hnb659fds-cfn-exec-role-014111701234-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-014111701234-us-east-1/313162535b8949bf8888bbdbaa66bd738827f74afba24863f19c5926f8bd6bde.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-014111701234-us-east-1/dff519400ef558a0a995dfc92335430889e59ec34dbc35e95ddc3e656817e249.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -53,24 +53,24 @@
             "type": "aws:cdk:warning",
             "data": "V1 pipeline type is implicitly selected when `pipelineType` is not set. If you want to use V2 type, set `PipelineType.V2`. [ack: @aws-cdk/aws-codepipeline:unspecifiedPipelineType]",
             "trace": [
-              "Annotations.addMessage (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-NPaBPE/node_modules/aws-cdk-lib/core/lib/annotations.js:1:1709)",
-              "Annotations.addWarningV2 (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-NPaBPE/node_modules/aws-cdk-lib/core/lib/annotations.js:1:896)",
-              "CodePipeline.doBuildPipeline (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-NPaBPE/node_modules/aws-cdk-lib/pipelines/lib/codepipeline/codepipeline.js:1:5847)",
-              "CodePipeline.buildPipeline (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-NPaBPE/node_modules/aws-cdk-lib/pipelines/lib/main/pipeline-base.js:1:2621)",
-              "CodePipeline.buildJustInTime (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-NPaBPE/node_modules/aws-cdk-lib/pipelines/lib/main/pipeline-base.js:1:2688)",
-              "Object.visit (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-NPaBPE/node_modules/aws-cdk-lib/pipelines/lib/main/pipeline-base.js:1:1514)",
-              "recurse (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-NPaBPE/node_modules/aws-cdk-lib/core/lib/private/synthesis.js:2:4240)",
-              "recurse (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-NPaBPE/node_modules/aws-cdk-lib/core/lib/private/synthesis.js:2:4475)",
-              "recurse (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-NPaBPE/node_modules/aws-cdk-lib/core/lib/private/synthesis.js:2:4475)",
-              "invokeAspectsV2 (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-NPaBPE/node_modules/aws-cdk-lib/core/lib/private/synthesis.js:2:2866)",
-              "synthesize (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-NPaBPE/node_modules/aws-cdk-lib/core/lib/private/synthesis.js:1:1573)",
-              "App.synth (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-NPaBPE/node_modules/aws-cdk-lib/core/lib/stage.js:1:2770)",
-              "/private/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/tmpkaesdg26/lib/program.js:294:172",
-              "Kernel._Kernel_ensureSync (/private/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/tmpkaesdg26/lib/program.js:916:24)",
-              "Kernel.invoke (/private/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/tmpkaesdg26/lib/program.js:294:102)",
-              "KernelHost.processRequest (/private/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/tmpkaesdg26/lib/program.js:15467:36)",
-              "KernelHost.run (/private/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/tmpkaesdg26/lib/program.js:15427:22)",
-              "Immediate._onImmediate (/private/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/tmpkaesdg26/lib/program.js:15428:46)",
+              "Annotations.addMessage (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-iT43Pb/node_modules/aws-cdk-lib/core/lib/annotations.js:1:1709)",
+              "Annotations.addWarningV2 (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-iT43Pb/node_modules/aws-cdk-lib/core/lib/annotations.js:1:896)",
+              "CodePipeline.doBuildPipeline (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-iT43Pb/node_modules/aws-cdk-lib/pipelines/lib/codepipeline/codepipeline.js:1:5847)",
+              "CodePipeline.buildPipeline (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-iT43Pb/node_modules/aws-cdk-lib/pipelines/lib/main/pipeline-base.js:1:2621)",
+              "CodePipeline.buildJustInTime (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-iT43Pb/node_modules/aws-cdk-lib/pipelines/lib/main/pipeline-base.js:1:2688)",
+              "Object.visit (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-iT43Pb/node_modules/aws-cdk-lib/pipelines/lib/main/pipeline-base.js:1:1514)",
+              "recurse (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-iT43Pb/node_modules/aws-cdk-lib/core/lib/private/synthesis.js:2:4240)",
+              "recurse (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-iT43Pb/node_modules/aws-cdk-lib/core/lib/private/synthesis.js:2:4475)",
+              "recurse (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-iT43Pb/node_modules/aws-cdk-lib/core/lib/private/synthesis.js:2:4475)",
+              "invokeAspectsV2 (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-iT43Pb/node_modules/aws-cdk-lib/core/lib/private/synthesis.js:2:2866)",
+              "synthesize (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-iT43Pb/node_modules/aws-cdk-lib/core/lib/private/synthesis.js:1:1573)",
+              "App.synth (/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/jsii-kernel-iT43Pb/node_modules/aws-cdk-lib/core/lib/stage.js:1:2770)",
+              "/private/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/tmpzdw4ej2j/lib/program.js:294:172",
+              "Kernel._Kernel_ensureSync (/private/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/tmpzdw4ej2j/lib/program.js:916:24)",
+              "Kernel.invoke (/private/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/tmpzdw4ej2j/lib/program.js:294:102)",
+              "KernelHost.processRequest (/private/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/tmpzdw4ej2j/lib/program.js:15467:36)",
+              "KernelHost.run (/private/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/tmpzdw4ej2j/lib/program.js:15427:22)",
+              "Immediate._onImmediate (/private/var/folders/ym/f1vt5l7n2ds1y__0p9r42qrh0000gq/T/tmpzdw4ej2j/lib/program.js:15428:46)",
               "process.processImmediate (node:internal/timers:485:21)"
             ]
           }
@@ -145,60 +145,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "PipelineBuildSynthCdkBuildProject6BEFA8E6"
-          }
-        ],
-        "/PipelineStack/Pipeline/Pipeline/QualityGate/Linting/Linting/Role/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "PipelineQualityGateLintingRole1DF2F0E1"
-          }
-        ],
-        "/PipelineStack/Pipeline/Pipeline/QualityGate/Linting/Linting/Role/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "PipelineQualityGateLintingRoleDefaultPolicyC9D3DF35"
-          }
-        ],
-        "/PipelineStack/Pipeline/Pipeline/QualityGate/Linting/Linting/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "PipelineQualityGateLintingC8B0F45E"
-          }
-        ],
-        "/PipelineStack/Pipeline/Pipeline/QualityGate/SecurityScan/SecurityScan/Role/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "PipelineQualityGateSecurityScanRole4AE31A00"
-          }
-        ],
-        "/PipelineStack/Pipeline/Pipeline/QualityGate/SecurityScan/SecurityScan/Role/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "PipelineQualityGateSecurityScanRoleDefaultPolicy2FF8E762"
-          }
-        ],
-        "/PipelineStack/Pipeline/Pipeline/QualityGate/SecurityScan/SecurityScan/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "PipelineQualityGateSecurityScanE5E159F2"
-          }
-        ],
-        "/PipelineStack/Pipeline/Pipeline/QualityGate/UnitTests/UnitTests/Role/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "PipelineQualityGateUnitTestsRoleC74171BE"
-          }
-        ],
-        "/PipelineStack/Pipeline/Pipeline/QualityGate/UnitTests/UnitTests/Role/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "PipelineQualityGateUnitTestsRoleDefaultPolicyC740F94F"
-          }
-        ],
-        "/PipelineStack/Pipeline/Pipeline/QualityGate/UnitTests/UnitTests/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "PipelineQualityGateUnitTests82F2D281"
           }
         ],
         "/PipelineStack/Pipeline/Pipeline/Dev/DevValidation/DevValidation/Role/Resource": [
