@@ -8,9 +8,9 @@ exclude =
     venv,
     .venv
 ignore = 
-    E501,  # line too long
-    W503,  # line break before binary operator
-    E203,  # whitespace before ':'
-    F401   # imported but unused (common in __init__.py)
+    E501,
+    W503,
+    E203,
+    F401
 per-file-ignores =
     __init__.py:F401
