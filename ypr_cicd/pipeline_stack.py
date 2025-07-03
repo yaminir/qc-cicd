@@ -4,19 +4,21 @@ from constructs import Construct
 from .ypr_cicd_stack import YprCicdStack
 from .config import ENVIRONMENTS
 
+
 class PipelineStack(cdk.Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        source = pipelines.CodePipelineSource.connection("yaminir/qc-cicd", "main",
+        source = pipelines.CodePipelineSource.connection(
+            "yaminir/qc-cicd", "main",
             connection_arn="arn:aws:codeconnections:us-east-1:014111701234:connection/89a0ea4c-89e1-4392-a652-6d616c365ba4",
             trigger_on_push=True)
-        
+
         pipeline = pipelines.CodePipeline(self, "Pipeline",
-            pipeline_name="YprCicdPipeline",
-            cross_account_keys=True,
-            synth=pipelines.ShellStep("Synth",
-                input=source,
+                                          pipeline_name="YprCicdPipeline",
+                                          cross_account_keys=True,
+                                          synth=pipelines.ShellStep("Synth",
+                                                                     input=source,
                 commands=[
                     # Quality Gate - Run before synth
                     "echo 'Starting Quality Gate...'",
